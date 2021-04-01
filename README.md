@@ -1,4 +1,5 @@
 bunch-alfred
 ============
 
-Because the other one doesn't work.
+Alfred workflow for [Bunch](https://brettterpstra.com/bunch/).<br>
+Because [the other one](https://github.com/kjaymiller/Bunch_Alfred) doesn't work.
