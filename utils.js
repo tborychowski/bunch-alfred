@@ -2,6 +2,7 @@ const path = require('path');
 const fs = require('fs').promises;
 const { exec } = require('child_process');
 const os = require('os');
+const URL = process.env.beta === 'true' ? 'x-bunch-beta' : 'x-bunch';
 
 function run (cmd) {
 	return new Promise((resolve, reject) => {
@@ -44,7 +45,7 @@ function readdir (dir) {
 					const name = path.basename(f, '.bunch');
 					const subtitle = path.join(dir, f);
 					const title = name.replace(/-/g, ' ');
-					return { title, subtitle, arg: `x-bunch://${name}` };
+					return { title, subtitle, arg: `${URL}://${name}` };
 				});
 		})
 		.then(res => Promise.all(res.map(improveTitle)));
