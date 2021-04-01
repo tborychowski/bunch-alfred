@@ -123,6 +123,8 @@
 		<key>beta</key>
 		<string>false</string>
 	</dict>
+	<key>variablesdontexport</key>
+	<array/>
 	<key>version</key>
 	<string>1.1</string>
 	<key>webaddress</key>
