@@ -12,6 +12,27 @@ function run (cmd) {
 	});
 }
 
+// ---
+// title: TITLE
+// ---
+function getTitleFromFile (file) {
+	const r = new RegExp('(---\n)(.*)(\n---\n)', 'g');
+	return fs
+		.readFile(file, 'UTF-8')
+		.then(res => {
+			let [,,title] = r.exec(res);
+			if (title) title = title.replace(/title:/, '').trim();
+			return title;
+		});
+}
+
+function improveTitle (item) {
+	return getTitleFromFile(item.subtitle).then(res => {
+		if (res) item.title = res;
+		return item;
+	});
+}
+
 
 function readdir (dir) {
 	return fs
@@ -21,21 +42,20 @@ function readdir (dir) {
 				.filter(f => path.extname(f) === '.bunch')
 				.map(f => {
 					const name = path.basename(f, '.bunch');
-					return {
-						title: name.replace(/-/g, ' '),
-						arg: `x-bunch://${name}`,
-						subtitle: path.join(dir, f)
-					};
+					const subtitle = path.join(dir, f);
+					const title = name.replace(/-/g, ' ');
+					return { title, subtitle, arg: `x-bunch://${name}` };
 				});
-		});
+		})
+		.then(res => Promise.all(res.map(improveTitle)));
 }
+
 
 function untilde (dir) {
 	return dir.trim().replace('~', os.homedir);
 }
 
 module.exports = {
-	path,
 	readdir,
 	run,
 	untilde,
